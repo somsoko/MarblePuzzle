@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MarblePuzzle</string>
+    <string name="logo_name">구슬 퍼즐</string>
+    <string name="game_start">게임 시작</string>
 </resources>

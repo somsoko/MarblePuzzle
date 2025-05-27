@@ -67,6 +67,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
+                                                <entry key="color" value="000000" />
                                                 <entry key="imagePath" value="C:\Users\heon\AppData\Local\Temp\ic_android_black_24dp.xml" />
                                               </map>
                                             </option>
@@ -79,6 +80,8 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
+                                                <entry key="imagePath" value="C:\Users\heon\Downloads\Group 12.png" />
+                                                <entry key="scalingPercent" value="51" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -106,6 +109,14 @@
                                           </PersistentState>
                                         </value>
                                       </entry>
+                                    </map>
+                                  </option>
+                                  <option name="values">
+                                    <map>
+                                      <entry key="backgroundAssetType" value="COLOR" />
+                                      <entry key="backgroundColor" value="fff0dd" />
+                                      <entry key="generateWebpIcons" value="false" />
+                                      <entry key="previewDensity" value="mdpi" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -271,14 +282,14 @@
                                       </entry>
                                     </map>
                                   </option>
+                                  <option name="values">
+                                    <map>
+                                      <entry key="previewDensity" value="mdpi" />
+                                    </map>
+                                  </option>
                                 </PersistentState>
                               </value>
                             </entry>
-                          </map>
-                        </option>
-                        <option name="values">
-                          <map>
-                            <entry key="outputIconType" value="LAUNCHER_LEGACY" />
                           </map>
                         </option>
                       </PersistentState>
