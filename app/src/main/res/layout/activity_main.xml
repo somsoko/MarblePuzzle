@@ -1,47 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="#FAE9D6"
-              android:padding="10dp"
-              android:gravity="center">
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/ic_launcher_background"
+        android:padding="10dp">
+
+    <ImageButton
+            android:id="@+id/setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/outline_asterisk_24"
+            android:background="@android:color/transparent"/>
 
 
     <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:gravity="center">
 
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
         <ImageView
-                android:id="@+id/logoImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/marble_logo"
                 android:layout_marginBottom="10dp"/>
         <TextView
-                android:id="@+id/titleText"
                 android:text="@string/logo_name"
                 android:textSize="36sp"
-                android:textColor="#99BBFF"
+                android:textColor="@color/blue"
                 android:fontFamily="@font/jua"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+
+        <Button
+                android:id="@+id/startButton"
+                android:text="@string/game_start"
+                android:fontFamily="@font/jua"
+                android:background="@android:color/transparent"
+                android:textSize="24sp"
+                android:textColor="#333333"
+                android:elevation="4dp"
+                android:padding="12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
     </LinearLayout>
-
-
-    <Button
-            android:id="@+id/startButton"
-            android:text="@string/game_start"
-            android:fontFamily="@font/jua"
-            android:background="@android:color/transparent"
-            android:textSize="24sp"
-            android:textColor="#333333"
-            android:elevation="4dp"
-            android:padding="12dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="visible"/>
-
 </LinearLayout>
