@@ -69,6 +69,16 @@ public class DifficultyListManager {
         }
     }
 
+    public void setClickListener(Context context, View card, int i) {
+        if(!info.get(i).getLocked()) {
+            card.setOnClickListener(v -> {
+                Intent intent = new Intent(context, StageListActivity.class);
+                intent.putExtra("difficulty", (String) v.getTag());
+                context.startActivity(intent);
+            });
+        }
+    }
+
     public void unlockNext(int i,int diffNum) {
         if(i<diffNum-1)
             pref.edit().putBoolean((i+1)+"locked",false).apply();
@@ -124,11 +134,7 @@ public class DifficultyListManager {
             setCard(context,card, inform);
             card.setTag((i+1)+"cleared");
 
-            card.setOnClickListener(v -> {
-                Intent intent = new Intent(context, StageListActivity.class);
-                intent.putExtra("difficulty", (String) v.getTag());
-                context.startActivity(intent);
-            });
+            setClickListener(context,card,i);
 
             container.addView(card);
         }
