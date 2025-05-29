@@ -11,7 +11,7 @@
             android:id="@+id/setting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/outline_asterisk_24"
+            android:src="@drawable/baseline_settings_24"
             android:background="@android:color/transparent"/>
 
 
@@ -30,8 +30,7 @@
         <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/marble_logo"
-                android:layout_marginBottom="10dp"/>
+                android:src="@drawable/marble_logo"/>
         <TextView
                 android:text="@string/logo_name"
                 android:textSize="36sp"

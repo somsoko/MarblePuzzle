@@ -1,0 +1,8 @@
+[
+  {"diffNum":  5},
+  {"1difficulty": "tutorial", "1total": 8, "1cleared": 0, "1locked": false},
+  {"2difficulty": "easy", "2total": 8, "2cleared": 0, "2locked": true},
+  {"3difficulty": "normal", "3total": 8, "3cleared": 0, "3locked": true},
+  {"4difficulty": "hard", "4total": 8, "4cleared": 0, "4locked": true},
+  {"5difficulty": "soon", "5total": 8, "5cleared": 0, "5locked": true}
+]
