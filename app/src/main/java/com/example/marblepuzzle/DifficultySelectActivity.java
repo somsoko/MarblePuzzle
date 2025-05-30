@@ -16,7 +16,6 @@ public class DifficultySelectActivity extends FragmentActivity {
 
         difficultyListManager = new DifficultyListManager(this);
         container = findViewById(R.id.difficultyList);
-        difficultyListManager.addCard(this,container);
 
         ImageButton difficultyButtonBack = findViewById(R.id.difficultyButtonBack);
         difficultyButtonBack.setOnClickListener(view -> {
@@ -24,6 +23,7 @@ public class DifficultySelectActivity extends FragmentActivity {
         });
     }
 
+    @Override
     protected void onResume() {
         super.onResume();
         difficultyListManager.refresh();

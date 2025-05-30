@@ -1,26 +1,34 @@
 package com.example.marblepuzzle;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.widget.TextView;
+import android.os.Bundle;
+import android.widget.GridLayout;
+import android.widget.ImageButton;
 import androidx.fragment.app.FragmentActivity;
 
 public class StageListActivity extends FragmentActivity {
+    StageListManager stageListManager;
+    private GridLayout container;
+
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.stage_list);
 
         String difficulty = getIntent().getStringExtra("difficulty");
+        stageListManager = new StageListManager(this, difficulty);
+        container = findViewById(R.id.stageGrid);
 
-        TextView text = findViewById(R.id.stage);
-        text.setText(difficulty);
-
-        SharedPreferences pref = getSharedPreferences("difficultyInfo", Context.MODE_PRIVATE);
-        int cleared = pref.getInt(difficulty, 7);
-        TextView text2 = findViewById(R.id.clear);
-        String s = cleared+"";
-        text2.setText(s);
-        pref.edit().putInt(difficulty,cleared+1).apply();
+        ImageButton difficultyButtonBack = findViewById(R.id.difficultyButtonBack);
+        difficultyButtonBack.setOnClickListener(view -> {
+            finish();
+        });
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        container.removeAllViews();
+        stageListManager.addStageItem(this,container);
+    }
+
 }

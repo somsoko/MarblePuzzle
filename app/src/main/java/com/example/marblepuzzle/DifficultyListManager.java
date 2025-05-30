@@ -24,8 +24,8 @@ import java.util.ArrayList;
 // 난이도 리스트 구성 클래스
 public class DifficultyListManager {
     // 각 난이도 정보 저장 배열
-    public ArrayList<DifficultyInfo> info = new ArrayList<>();
-    public SharedPreferences pref;
+    private ArrayList<DifficultyInfo> info = new ArrayList<>();
+    private SharedPreferences pref;
 
     // 각 json 난이도 정보 읽기
     public DifficultyListManager(Context context) {
@@ -62,10 +62,6 @@ public class DifficultyListManager {
             catch (IOException | JSONException e) {
                 throw new RuntimeException(e);
             }
-        }
-
-        for(int i=1; i<=diffNum; i++) {
-            info.add(new DifficultyInfo(pref.getString(i+"difficulty",null),pref.getInt(i+"total",0),pref.getInt(i+"cleared",0),pref.getBoolean(i+"locked",true)));
         }
     }
 
@@ -131,8 +127,8 @@ public class DifficultyListManager {
 
             TextView textView = card.findViewById(R.id.difficultyText);
             textView.setText(textView.getResources().getIdentifier(inform.getDifficulty(),"string",context.getPackageName()));
-            setCard(context,card, inform);
-            card.setTag((i+1)+"cleared");
+            card.setTag(pref.getString((i+1)+"difficulty",null));
+            setCard(context,card,inform);
 
             setClickListener(context,card,i);
 

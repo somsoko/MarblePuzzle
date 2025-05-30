@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="card_width">170dp</dimen>
+    <dimen name="stage_box_width">70dp</dimen>
+    <dimen name="star_width">20dp</dimen>
 </resources>

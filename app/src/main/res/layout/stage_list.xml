@@ -1,21 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:gravity="center">
-    <TextView
-            android:id="@+id/stage"
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/ic_launcher_background"
+        android:padding="10dp">
+
+    <ImageButton
+            android:id="@+id/difficultyButtonBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="">
-    </TextView>
+            android:src="@drawable/outline_arrow_back_24"
+            android:background="@android:color/transparent"/>
 
-    <TextView
-            android:id="@+id/clear"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="">
-    </TextView>
 
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:scrollbars="none">
+
+        <GridLayout
+                android:id="@+id/stageGrid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alignmentMode="alignMargins"
+                android:layout_gravity="center_horizontal"
+                android:columnCount="7"
+                android:padding="10dp">
+        </GridLayout>
+
+    </ScrollView>
 </LinearLayout>

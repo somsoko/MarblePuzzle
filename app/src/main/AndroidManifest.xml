@@ -33,6 +33,10 @@
         <activity android:name=".StageListActivity"
                   android:screenOrientation="landscape"
                   android:exported="false"/>
+
+        <activity android:name=".StageActivity"
+                  android:screenOrientation="landscape"
+                  android:exported="false"/>
     </application>
 
 </manifest>
