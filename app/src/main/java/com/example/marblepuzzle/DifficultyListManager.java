@@ -69,7 +69,7 @@ public class DifficultyListManager {
         if(!info.get(i).getLocked()) {
             card.setOnClickListener(v -> {
                 Intent intent = new Intent(context, StageListActivity.class);
-                intent.putExtra("difficulty", (String) v.getTag());
+                intent.putExtra("difficulty", (int) v.getTag());
                 context.startActivity(intent);
             });
         }
@@ -127,7 +127,7 @@ public class DifficultyListManager {
 
             TextView textView = card.findViewById(R.id.difficultyText);
             textView.setText(textView.getResources().getIdentifier(inform.getDifficulty(),"string",context.getPackageName()));
-            card.setTag(pref.getString((i+1)+"difficulty",null));
+            card.setTag(i+1);
             setCard(context,card,inform);
 
             setClickListener(context,card,i);

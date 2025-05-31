@@ -14,7 +14,7 @@ public class StageListActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.stage_list);
 
-        String difficulty = getIntent().getStringExtra("difficulty");
+        int difficulty = getIntent().getIntExtra("difficulty",0);
         stageListManager = new StageListManager(this, difficulty);
         container = findViewById(R.id.stageGrid);
 
