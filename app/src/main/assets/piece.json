@@ -1,0 +1,98 @@
+[
+  {
+    "1name": "m",
+    "origin": [0,0],
+    "1offset": [[-1,-1],[-1,0],[0,1],[1,1]],
+    "rotate": 0,
+    "mirrorVer": false,
+    "mirrorHor": false
+  },
+  {
+    "1name": "x",
+    "origin": [0,0],
+    "1offset": [[-1,0],[0,-1],[1,0],[0,1]],
+    "rotate": 0,
+    "mirrorVer": false,
+    "mirrorHor": false
+  },
+  {
+    "1name": "l",
+    "origin": [0,0],
+    "1offset": [[-1,0],[1,0],[2,0]],
+    "rotate": 0,
+    "mirrorVer": false,
+    "mirrorHor": false
+  },
+  {
+    "1name": "c",
+    "origin": [0,0],
+    "1offset": [[0,1],[1,1],[0,-1],[1,-1]],
+    "rotate": 0,
+    "mirrorVer": false,
+    "mirrorHor": false
+  },
+  {
+    "1name": "b",
+    "origin": [0,0],
+    "1offset": [[0,1],[0,-1],[1,0],[1,-1]],
+    "rotate": 0,
+    "mirrorVer": false,
+    "mirrorHor": false
+  },
+  {
+    "1name": "lL",
+    "origin": [0,0],
+    "1offset": [[0,1],[1,0],[2,0],[3,0]],
+    "rotate": 0,
+    "mirrorVer": false,
+    "mirrorHor": false
+  },
+  {
+    "1name": "sL",
+    "origin": [0,0],
+    "1offset": [[0,1],[1,0],[2,0]],
+    "rotate": 0,
+    "mirrorVer": false,
+    "mirrorHor": false
+  },
+  {
+    "1name": "lV",
+    "origin": [0,0],
+    "1offset": [[1,0],[2,0],[-1,0],[-2,0]],
+    "rotate": 0,
+    "mirrorVer": false,
+    "mirrorHor": false
+  },
+  {
+    "1name": "o",
+    "origin": [0,0],
+    "1offset": [[1,0],[-1,0],[1,-1]],
+    "rotate": 0,
+    "mirrorVer": false,
+    "mirrorHor": false
+  },
+  {
+    "1name": "sV",
+    "origin": [0,0],
+    "1offset": [[1,0],[0,-1]],
+    "rotate": 0,
+    "mirrorVer": false,
+    "mirrorHor": false
+  },
+  {
+    "1name": "z",
+    "origin": [0,0],
+    "1offset": [[0,1],[1,1],[-1,0],[-2,0]],
+    "rotate": 0,
+    "mirrorVer": false,
+    "mirrorHor": false
+  },
+  {
+    "1name": "r",
+    "origin": [0,0],
+    "1offset": [[0,1],[1,0],[0,-1],[0,-2]],
+    "rotate": 0,
+    "mirrorVer": false,
+    "mirrorHor": false
+  }
+]

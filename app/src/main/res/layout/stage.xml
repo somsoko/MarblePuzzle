@@ -8,7 +8,7 @@
         android:padding="10dp">
 
     <ImageButton
-            android:id="@+id/difficultyButtonBack"
+            android:id="@+id/stageButtonBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/outline_apps_24"
