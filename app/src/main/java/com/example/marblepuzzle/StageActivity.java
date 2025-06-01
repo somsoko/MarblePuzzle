@@ -4,11 +4,15 @@ package com.example.marblepuzzle;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import androidx.fragment.app.FragmentActivity;
 
 
     public class StageActivity extends FragmentActivity {
+        StageManager stageManager;
+
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -18,8 +22,12 @@ import androidx.fragment.app.FragmentActivity;
             stageButton.setOnClickListener(view -> {
                 finish();
             });
-
             String stage = getIntent().getStringExtra("stageName");
+
+            stageManager = new StageManager(this,stage);
+            FrameLayout container = findViewById(R.id.stageWindow);
+            stageManager.addPiece(this,container);
+
             String[] part = stage.split("-");
             String diff = part[0].trim();
             String stageName = part[1].trim();
