@@ -27,7 +27,10 @@ import androidx.fragment.app.FragmentActivity;
 
             stageManager = new StageManager(this,stage);
             FrameLayout container = findViewById(R.id.stageWindow);
-            stageManager.addPiece(this,container);
+            container.post(()->{
+                stageManager.addPiece(this,container);
+            });
+
 
             String[] part = stage.split("-");
             String diff = part[0].trim();

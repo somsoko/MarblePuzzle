@@ -2,13 +2,11 @@ package com.example.marblepuzzle;
 
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.TextView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -153,7 +151,7 @@ public class StageManager {
             }
 
             float[] xy = p.getXY();
-            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(300,300);
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(305,305);
             xy = board.getRealXY((int)xy[0],(int)xy[1]);
             float[] w = p.getCenter();
             params.leftMargin = (int)(xy[0]-2*w[0]);
@@ -182,6 +180,7 @@ public class StageManager {
     public void setTouchListener(View imageView, Piece p) {
             imageView.setOnTouchListener(new View.OnTouchListener() {
                 float dX, dY;
+                float[] w = p.getCenter();
 
                 @Override
                 public boolean onTouch(View view, MotionEvent event) {
@@ -206,28 +205,45 @@ public class StageManager {
                                     .start();
 
                             // 새로운 좌표 저장
-                            p.setXY(newX, newY);
+                            p.setXY(newX+2*w[0], newY+2*w[1]);
 
                             break;
 
-                            /* 스냅 기능
                             case MotionEvent.ACTION_UP:
-                                float viewX = view.getX();
-                                float viewY = view.getY();
+                                float viewX = view.getX()+2*w[0];
+                                float viewY = view.getY()+2*w[1];
 
-                                int[] snappedXY = findNearestHole(viewX, viewY); // 사용자 함수
+                                int[] logical = board.getLogicalXY(viewX, viewY);
+                                int x = logical[0];
+                                int y = logical[1];
 
-                                view.animate()
-                                        .x(snappedXY[0]) // 사용자 함수
-                                        .y(snappedXY[1])
-                                        .setDuration(100)
-                                        .start();
+                                if (x < 0 || x >= 10) {
+                                    p.setXY(viewX, viewY);
+                                    break;
+                                }
+                                if (y < 0 || y >= 10 - x) {
+                                    p.setXY(viewX, viewY);
+                                    break;
+                                }
 
-                                // 위치 정보 저장
-                                Piece piece = (Piece) view.getTag();
-                                piece.setXY(snappedXY[0], snappedXY[1]);
+                                if(board.isValid(x,y)) {
+                                    float[] xy = board.getRealXY(x,y);
+
+                                    view.animate()
+                                            .x(xy[0]-2*w[0])
+                                            .y(xy[1]-2*w[1])
+                                            .setDuration(100)
+                                            .start();
+
+                                    board.inPiece(x,y,p.getOffset());
+
+                                    p.setXY(xy[0]-2*w[0], xy[1]-2*w[1]);
+                                    break;
+                                }
+
+                                p.setXY(viewX, viewY);
                                 break;
-                             */
+
                     }
                     return true;
                 }

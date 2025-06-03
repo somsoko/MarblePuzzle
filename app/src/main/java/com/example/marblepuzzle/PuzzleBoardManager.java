@@ -18,9 +18,33 @@ public class PuzzleBoardManager {
     // 논리 좌표를 실제 좌표로 변환
     public float[] getRealXY(int x, int y) {
         float[] xy = new float[2];
-        xy[0] = 1175+(61*x)-(61*y);
-        xy[1] = 85+(60*x)+(61*y);
+        int w = imageView.getWidth();
+        int h = imageView.getHeight();
+        float r = h/15.2f;
+        xy[0] = (imageView.getX()+w/2f)+(r*x)-(r*y);
+        xy[1] = (imageView.getY()+h/11f)+(r*x)+(r*y);
+
         return xy;
+    }
+
+    // 실제 좌표를 논리 좌표로 변환
+    public int[] getLogicalXY(float screenX, float screenY) {
+        int w = imageView.getWidth();
+        int h = imageView.getHeight();
+        float r = h/15.2f;
+        float centerX = imageView.getX() + w / 2f;
+        float centerY = imageView.getY() + h / 11f;
+
+        float sx = screenX - centerX;
+        float sy = screenY - centerY;
+
+        float denom = (r * r + r * r);
+
+        float x = (sx * r + sy * r) / denom;
+        float y = (sy * r - sx * r) / denom;
+
+        // 반올림하여 가장 가까운 논리 좌표로
+        return new int[]{Math.round(x), Math.round(y)};
     }
 
     public boolean isValid(int xIndex, int yIndex) {
