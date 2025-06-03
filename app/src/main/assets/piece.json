@@ -1,7 +1,7 @@
 [
   {
     "name": "m",
-    "origin": [100,100],
+    "origin": [75,90],
     "offset": [[-1,-1],[-1,0],[0,1],[1,1]],
     "rotate": 0,
     "mirrorVer": false,
@@ -9,7 +9,7 @@
   },
   {
     "name": "x",
-    "origin": [0,0],
+    "origin": [75,75],
     "offset": [[-1,0],[0,-1],[1,0],[0,1]],
     "rotate": 0,
     "mirrorVer": false,
@@ -17,7 +17,7 @@
   },
   {
     "name": "l",
-    "origin": [0,0],
+    "origin": [60,60],
     "offset": [[-1,0],[1,0],[2,0]],
     "rotate": 0,
     "mirrorVer": false,
@@ -25,7 +25,7 @@
   },
   {
     "name": "c",
-    "origin": [0,0],
+    "origin": [60,60],
     "offset": [[0,1],[1,1],[0,-1],[1,-1]],
     "rotate": 0,
     "mirrorVer": false,
@@ -33,47 +33,47 @@
   },
   {
     "name": "b",
-    "origin": [0,0],
+    "origin": [75,60],
     "offset": [[0,1],[0,-1],[1,0],[1,-1]],
     "rotate": 0,
     "mirrorVer": false,
     "mirrorHor": false
   },
   {
-    "name": "lL",
-    "origin": [0,0],
+    "name": "ll",
+    "origin": [30,45],
     "offset": [[0,1],[1,0],[2,0],[3,0]],
     "rotate": 0,
     "mirrorVer": false,
     "mirrorHor": false
   },
   {
-    "name": "sL",
-    "origin": [0,0],
+    "name": "sl",
+    "origin": [45,60],
     "offset": [[0,1],[1,0],[2,0]],
     "rotate": 0,
     "mirrorVer": false,
     "mirrorHor": false
   },
   {
-    "name": "lV",
-    "origin": [0,0],
-    "offset": [[1,0],[2,0],[-1,0],[-2,0]],
+    "name": "lv",
+    "origin": [75,45],
+    "offset": [[1,0],[2,0],[0,-1],[0,-2]],
     "rotate": 0,
     "mirrorVer": false,
     "mirrorHor": false
   },
   {
     "name": "o",
-    "origin": [0,0],
-    "offset": [[1,0],[-1,0],[1,-1]],
+    "origin": [75,45],
+    "offset": [[1,0],[0,-1],[1,-1]],
     "rotate": 0,
     "mirrorVer": false,
     "mirrorHor": false
   },
   {
-    "name": "sV",
-    "origin": [0,0],
+    "name": "sv",
+    "origin": [75,60],
     "offset": [[1,0],[0,-1]],
     "rotate": 0,
     "mirrorVer": false,
@@ -81,7 +81,7 @@
   },
   {
     "name": "z",
-    "origin": [0,0],
+    "origin": [75,105],
     "offset": [[0,1],[1,1],[-1,0],[-2,0]],
     "rotate": 0,
     "mirrorVer": false,
@@ -89,7 +89,7 @@
   },
   {
     "name": "r",
-    "origin": [0,0],
+    "origin": [90,60],
     "offset": [[0,1],[1,0],[0,-1],[0,-2]],
     "rotate": 0,
     "mirrorVer": false,

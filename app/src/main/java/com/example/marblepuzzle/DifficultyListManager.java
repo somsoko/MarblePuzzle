@@ -65,7 +65,7 @@ public class DifficultyListManager {
         }
     }
 
-    public void setClickListener(Context context, View card, int i) {
+    private void setClickListener(Context context, View card, int i) {
         if(!info.get(i).getLocked()) {
             card.setOnClickListener(v -> {
                 Intent intent = new Intent(context, StageListActivity.class);
@@ -75,7 +75,7 @@ public class DifficultyListManager {
         }
     }
 
-    public void unlockNext(int i,int diffNum) {
+    private void unlockNext(int i,int diffNum) {
         if(i<diffNum-1)
             pref.edit().putBoolean((i+1)+"locked",false).apply();
     }
@@ -93,7 +93,7 @@ public class DifficultyListManager {
         }
     }
 
-    public void setCard(Context context, View card, DifficultyInfo inform) {
+    private void setCard(Context context, View card, DifficultyInfo inform) {
         if(!inform.getLocked()) {
             LinearLayout layout = card.findViewById(R.id.layout);
             layout.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_card_background));

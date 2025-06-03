@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,8 +19,9 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 
 public class StageManager {
-    HashMap<String,Piece> piece = new HashMap<>();
-    String[] usedPiece;
+    private HashMap<String,Piece> piece = new HashMap<>();
+    private String[] usedPiece;
+    private PuzzleBoardManager board;
 
     public StageManager(Context context, String stageName) {
         AssetManager assetManager = context.getAssets();
@@ -128,16 +130,37 @@ public class StageManager {
     }
 
     public void addPiece(Context context, ViewGroup container){
+        board = new PuzzleBoardManager(container);
         for(Piece p : piece.values()) {
             ImageView imageView = new ImageView(context);
             String name = p.getName();
             int id = context.getResources().getIdentifier(name, "drawable", context.getPackageName());
             imageView.setImageResource(id);
+
+            for(int i=0; i<p.getRotate()/90; i++) {
+                p.rotate();
+            }
+            imageView.setRotation(p.getRotate());
+            if(p.isMirrorVer()) {
+                p.mirrorVer();
+                imageView.setScaleY(-1f);
+                imageView.setRotation(90);
+            }
+            if(p.isMirrorHor()) {
+                p.mirrorHor();
+                imageView.setScaleX(-1f);
+                imageView.setRotation(90);
+            }
+
             float[] xy = p.getXY();
-            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(310,300);
-            params.leftMargin = (int) xy[0];
-            params.topMargin = (int) xy[1];
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(300,300);
+            xy = board.getRealXY((int)xy[0],(int)xy[1]);
+            float[] w = p.getCenter();
+            params.leftMargin = (int)(xy[0]-2*w[0]);
+            params.topMargin = (int)(xy[1]-2*w[1]);
             imageView.setLayoutParams(params);
+
+
 
             boolean used = false;
             for(int i=0; i<usedPiece.length; i++) {
@@ -148,31 +171,45 @@ public class StageManager {
             }
 
             if(!used) {
-                imageView.setOnTouchListener(new View.OnTouchListener() {
-                    float dX, dY;
+                setTouchListener(imageView,p);
+            }
 
-                    @Override
-                    public boolean onTouch(View view, MotionEvent event) {
-                        switch (event.getAction()) {
-                            case MotionEvent.ACTION_DOWN:
-                                dX = view.getX() - event.getRawX();
-                                dY = view.getY() - event.getRawY();
-                                break;
+            container.addView(imageView);
+        }
 
-                            case MotionEvent.ACTION_MOVE:
-                                float newX = event.getRawX() + dX;
-                                float newY = event.getRawY() + dY;
+    }
 
-                                view.animate()
-                                        .x(event.getRawX() + dX)
-                                        .y(event.getRawY() + dY)
-                                        .setDuration(0)
-                                        .start();
+    public void setTouchListener(View imageView, Piece p) {
+            imageView.setOnTouchListener(new View.OnTouchListener() {
+                float dX, dY;
 
-                                // 새로운 좌표 저장
-                                p.setXY(newX, newY);
+                @Override
+                public boolean onTouch(View view, MotionEvent event) {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            dX = view.getX() - event.getRawX();
+                            dY = view.getY() - event.getRawY();
 
-                                break;
+                            view.bringToFront();
+                            view.invalidate();
+
+                            break;
+
+                        case MotionEvent.ACTION_MOVE:
+                            float newX = event.getRawX() + dX;
+                            float newY = event.getRawY() + dY;
+
+                            view.animate()
+                                    .x(event.getRawX() + dX)
+                                    .y(event.getRawY() + dY)
+                                    .setDuration(0)
+                                    .start();
+
+                            // 새로운 좌표 저장
+                            p.setXY(newX, newY);
+
+                            break;
+
                             /* 스냅 기능
                             case MotionEvent.ACTION_UP:
                                 float viewX = view.getX();
@@ -191,15 +228,10 @@ public class StageManager {
                                 piece.setXY(snappedXY[0], snappedXY[1]);
                                 break;
                              */
-                        }
-                        return true;
                     }
-                });
-            }
-
-            container.addView(imageView);
-        }
-
+                    return true;
+                }
+            });
     }
 
     public void setTimer() {

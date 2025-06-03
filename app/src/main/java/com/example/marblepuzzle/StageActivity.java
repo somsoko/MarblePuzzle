@@ -11,7 +11,7 @@ import androidx.fragment.app.FragmentActivity;
 
 
     public class StageActivity extends FragmentActivity {
-        StageManager stageManager;
+        private StageManager stageManager;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +22,7 @@ import androidx.fragment.app.FragmentActivity;
             stageButton.setOnClickListener(view -> {
                 finish();
             });
+
             String stage = getIntent().getStringExtra("stageName");
 
             stageManager = new StageManager(this,stage);

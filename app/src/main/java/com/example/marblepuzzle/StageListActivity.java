@@ -6,7 +6,7 @@ import android.widget.ImageButton;
 import androidx.fragment.app.FragmentActivity;
 
 public class StageListActivity extends FragmentActivity {
-    StageListManager stageListManager;
+    private StageListManager stageListManager;
     private GridLayout container;
 
     @Override

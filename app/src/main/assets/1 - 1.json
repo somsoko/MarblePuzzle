@@ -1,7 +1,7 @@
 {
-  "used": ["m","lL","sL","lV","sV","x","c","b","z","l"],
-  "originPlace": [[8,1],[0,6],[0,0],[1,1],[5,3],[4,4],[2,4],[0,4],[4,2],[3,0]],
-  "originRotate": [0,0,0,0,0,0,0,0,0,0],
-  "originMirrorVer": [false,false,false,false,false,false,false,false,false,false],
+  "used": ["m","ll","sl","lv","sv","x","c","b","z","l"],
+  "originPlace": [[1,8],[0,6],[0,0],[1,1],[5,3],[4,4],[2,4],[0,4],[4,2],[3,0]],
+  "originRotate": [0,0,90,0,0,0,0,0,0,0],
+  "originMirrorVer": [false,true,false,false,true,false,false,false,false,false],
   "originMirrorHor": [false,false,false,false,false,false,false,false,false,false]
 }

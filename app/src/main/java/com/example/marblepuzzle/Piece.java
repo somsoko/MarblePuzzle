@@ -2,15 +2,16 @@ package com.example.marblepuzzle;
 
 public class Piece {
     private String name;
-    private float[] XY;
+    private float[] center;
+    private float[] XY = new float[2];
     private int[][] offset;
     private int rotate;
     private boolean mirrorVer, mirrorHor;
 
 
-    public Piece(String name, float[] XY, int[][] offset, int rotate, boolean mirrorVer, boolean mirrorHor) {
+    public Piece(String name, float[] center, int[][] offset, int rotate, boolean mirrorVer, boolean mirrorHor) {
         this.name = name;
-        this.XY = XY;
+        this.center = center;
         this.offset = offset;
         this.rotate = rotate;
         this.mirrorVer = mirrorVer;
@@ -19,6 +20,10 @@ public class Piece {
 
     public String getName() {
         return name;
+    }
+
+    public float[] getCenter() {
+        return center;
     }
 
     public float[] getXY() {
@@ -65,14 +70,45 @@ public class Piece {
 
 
     public void rotate() {
+        for (int i = 0; i < offset.length; i++) {
+            int x = offset[i][0];
+            int y = offset[i][1];
+            offset[i][0] = y;
+            offset[i][1] = -x;
+        }
 
+        float cx = center[0];
+        float cy = center[1];
+        center[0] = 150-cy;
+        center[1] = cx;
     }
 
     public void mirrorVer() {
+        for(int i=0; i< offset.length; i++) {
+            int x = offset[i][0];
+            int y = offset[i][1];
+            offset[i][0] = x;
+            offset[i][1] = -y;
+        }
 
+        float cx = center[0];
+        float cy = center[1];
+        center[0] = cy;
+        center[1] = cx;
     }
 
-    public void setMirrorHor() {
+    public void mirrorHor() {
+        for(int i=0; i< offset.length; i++) {
+            int x = offset[i][0];
+            int y = offset[i][1];
+            offset[i][0] = -x;
+            offset[i][1] = y;
+        }
+
+        float cx = center[0];
+        float cy = center[1];
+        center[0] = 150-cy;
+        center[1] = 150-cx;
 
     }
 

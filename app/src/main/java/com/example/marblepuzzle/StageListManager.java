@@ -23,7 +23,7 @@ public class StageListManager {
 
 
 
-    public int setStageItem(Context context, View stage, int i, int cleared) {
+    private int setStageItem(Context context, View stage, int i, int cleared) {
         int star = stagePref.getInt(i+"star",0);
         if(star >= 1) {
             ImageView imageView = stage.findViewById(R.id.star1);
@@ -68,7 +68,7 @@ public class StageListManager {
         setCleared(cleared);
     }
 
-    public void setCleared(int cleared) {
+    private void setCleared(int cleared) {
         diffPref.edit().putInt(diff+"cleared",cleared).apply();
     }
 
