@@ -24,10 +24,10 @@ import androidx.fragment.app.FragmentActivity;
             });
 
             String stage = getIntent().getStringExtra("stageName");
-
-            stageManager = new StageManager(this,stage);
             FrameLayout container = findViewById(R.id.stageWindow);
+
             container.post(()->{
+            stageManager = new StageManager(this,stage,container);
                 stageManager.addPiece(this,container);
             });
 

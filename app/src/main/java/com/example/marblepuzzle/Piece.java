@@ -9,13 +9,14 @@ public class Piece {
     private boolean mirrorVer, mirrorHor;
 
 
-    public Piece(String name, float[] center, int[][] offset, int rotate, boolean mirrorVer, boolean mirrorHor) {
+    public Piece(String name, float[] center, int[][] offset, int rotate, boolean mirrorVer, boolean mirrorHor, float[] XY) {
         this.name = name;
         this.center = center;
         this.offset = offset;
         this.rotate = rotate;
         this.mirrorVer = mirrorVer;
         this.mirrorHor = mirrorHor;
+        this.XY = XY;
     }
 
     public String getName() {

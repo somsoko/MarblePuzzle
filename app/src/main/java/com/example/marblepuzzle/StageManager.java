@@ -21,7 +21,7 @@ public class StageManager {
     private String[] usedPiece;
     private PuzzleBoardManager board;
 
-    public StageManager(Context context, String stageName) {
+    public StageManager(Context context, String stageName, ViewGroup container) {
         AssetManager assetManager = context.getAssets();
         StringBuilder pieceInfo = new StringBuilder();
 
@@ -42,10 +42,9 @@ public class StageManager {
                 String name = jsonObject.getString("name");
 
                 JSONArray originArray = jsonObject.getJSONArray("origin");
-                float[] origin = new float[originArray.length()];
-                for (int j = 0; j < originArray.length(); j++) {
-                    origin[j] = originArray.getInt(j);
-                }
+                float[] center = new float[2];
+                center[0] = originArray.getInt(0);
+                center[1] = originArray.getInt(1);
 
                 JSONArray offsetArray = jsonObject.getJSONArray("offset");
                 int[][] offset = new int[offsetArray.length()][2];
@@ -61,7 +60,19 @@ public class StageManager {
 
                 boolean mirrorHor = jsonObject.getBoolean("mirrorHor");
 
-                piece.put(name,new Piece(name,origin,offset,rotate,mirrorVer,mirrorHor));
+                JSONArray placeArray = jsonObject.getJSONArray("place");
+                float[] place = new float[2];
+                int x = placeArray.getInt(0);
+                if(x<0) {
+                    place[0] = container.getWidth()+x*305+2*center[0];
+                }
+                else {
+                    place[0] = x*305+2*center[0];
+                }
+                place[1] = placeArray.getInt(1)*305+2*center[1];
+
+
+                piece.put(name,new Piece(name,center,offset,rotate,mirrorVer,mirrorHor,place));
             }
         }
         catch (IOException | JSONException e) {
@@ -150,27 +161,29 @@ public class StageManager {
                 imageView.setRotation(90);
             }
 
-            float[] xy = p.getXY();
-            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(305,305);
-            xy = board.getRealXY((int)xy[0],(int)xy[1]);
-            float[] w = p.getCenter();
-            params.leftMargin = (int)(xy[0]-2*w[0]);
-            params.topMargin = (int)(xy[1]-2*w[1]);
-            imageView.setLayoutParams(params);
-
-
-
             boolean used = false;
             for(int i=0; i<usedPiece.length; i++) {
                 if(name.equals(usedPiece[i])) {
-                    imageView.setAlpha(0.5F);
+                    imageView.setAlpha(0.3F);
                     used = true;
                 }
             }
 
-            if(!used) {
-                setTouchListener(imageView,p);
+            float[] xy = p.getXY();
+            if(used) {
+                //board.inPiece((int)xy[0], (int)xy[1], p.getOffset());
+                xy = board.getPhysicalXY((int) xy[0], (int) xy[1]);
             }
+            else
+                setTouchListener(imageView,p);
+
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(305,305);
+            float[] w = p.getCenter();
+            int x = (int)(xy[0]-2*w[0]);
+            int y = (int)(xy[1]-2*w[1]);
+            params.leftMargin = x;
+            params.topMargin = y;
+            imageView.setLayoutParams(params);
 
             container.addView(imageView);
         }
@@ -217,17 +230,8 @@ public class StageManager {
                                 int x = logical[0];
                                 int y = logical[1];
 
-                                if (x < 0 || x >= 10) {
-                                    p.setXY(viewX, viewY);
-                                    break;
-                                }
-                                if (y < 0 || y >= 10 - x) {
-                                    p.setXY(viewX, viewY);
-                                    break;
-                                }
-
-                                if(board.isValid(x,y)) {
-                                    float[] xy = board.getRealXY(x,y);
+                                if(board.isValid(x,y,p.getOffset())) {
+                                    float[] xy = board.getPhysicalXY(x,y);
 
                                     view.animate()
                                             .x(xy[0]-2*w[0])
