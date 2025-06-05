@@ -5,13 +5,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/ic_launcher_background"
-        android:padding="10dp">
+        android:padding="10dp"
+        android:clipChildren="false">
 
     <ImageButton
             android:id="@+id/stageButtonBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/outline_apps_24"
+            android:src="@drawable/menu"
             android:background="@android:color/transparent"/>
 
 

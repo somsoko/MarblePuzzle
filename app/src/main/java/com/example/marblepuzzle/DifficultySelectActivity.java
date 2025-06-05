@@ -1,6 +1,7 @@
 package com.example.marblepuzzle;
 
 import android.os.Bundle;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import androidx.fragment.app.FragmentActivity;
@@ -12,6 +13,10 @@ public class DifficultySelectActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.difficulty);
 
         difficultyListManager = new DifficultyListManager(this);

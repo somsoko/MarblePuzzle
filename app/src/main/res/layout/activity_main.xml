@@ -7,13 +7,14 @@
         android:background="@color/ic_launcher_background"
         android:padding="10dp">
 
+    <!--
     <ImageButton
             android:id="@+id/setting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/baseline_settings_24"
             android:background="@android:color/transparent"/>
-
+    -->
 
     <LinearLayout
             android:layout_width="match_parent"

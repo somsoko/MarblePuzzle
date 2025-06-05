@@ -1,42 +1,96 @@
 package com.example.marblepuzzle;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.*;
 import androidx.fragment.app.FragmentActivity;
 
 
     public class StageActivity extends FragmentActivity {
         private StageManager stageManager;
+        private Timer timer = new Timer();
+        private String stage;
+        private boolean isPauseDialogVisible = false;
+        private AlertDialog pauseDialog;
+        private SharedPreferences pref;
+        private String diff;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
             setContentView(R.layout.stage);
+
+            timer.start();
 
             ImageButton stageButton = findViewById(R.id.stageButtonBack);
             stageButton.setOnClickListener(view -> {
-                finish();
+                timer.pause();
+                showPauseOverlay();
             });
 
-            String stage = getIntent().getStringExtra("stageName");
+            stage = getIntent().getStringExtra("stageName");
             FrameLayout container = findViewById(R.id.stageWindow);
 
             container.post(()->{
-            stageManager = new StageManager(this,stage,container);
+            stageManager = new StageManager(this,stage,container,timer);
                 stageManager.addPiece(this,container);
             });
 
-
             String[] part = stage.split("-");
-            String diff = part[0].trim();
+            diff = part[0].trim();
             String stageName = part[1].trim();
-            SharedPreferences pref = getSharedPreferences(diff+"diff", Context.MODE_PRIVATE);
-            pref.edit().putInt(stageName+"star",1).apply();
+            pref = getSharedPreferences(diff+"diff", Context.MODE_PRIVATE);
+        }
+
+
+        private void showPauseOverlay() {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            View view = getLayoutInflater().inflate(R.layout.pause, null);
+            builder.setView(view);
+            builder.setCancelable(false);
+            pauseDialog = builder.create();
+            pauseDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            pauseDialog.show();
+
+            TextView tvLevel = view.findViewById(R.id.tvLevel);
+            tvLevel.setText(stage);
+
+            int star = pref.getInt(diff+"star",0);
+            if(star >= 1) {
+                ((ImageView)view.findViewById(R.id.star1)).setImageResource(R.drawable.cleared_star);
+            }
+            if(star >= 2) {
+                ((ImageView)view.findViewById(R.id.star2)).setImageResource(R.drawable.cleared_star);
+            }
+            if(star >= 3) {
+                ((ImageView)view.findViewById(R.id.star3)).setImageResource(R.drawable.cleared_star);;
+            }
+
+            view.findViewById(R.id.btnResume).setOnClickListener(v -> {
+                pauseDialog.dismiss();
+                timer.resume(); // 스톱워치 재개 등
+            });
+
+            view.findViewById(R.id.btnLevelSelect).setOnClickListener(v -> {
+                timer.reset();
+                finish();
+            });
+
+            view.findViewById(R.id.btnRetry).setOnClickListener(v -> {
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
+            });
         }
     }
 

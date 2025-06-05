@@ -1,12 +1,19 @@
 package com.example.marblepuzzle;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.AssetManager;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,8 +27,17 @@ public class StageManager {
     private HashMap<String,Piece> piece = new HashMap<>();
     private String[] usedPiece;
     private PuzzleBoardManager board;
+    private ControlPiece controlPiece;
+    private boolean clear;
+    private Context context;
+    private Timer timer;
+    private SharedPreferences pref;
+    private String diff;
+    private String stage;
 
-    public StageManager(Context context, String stageName, ViewGroup container) {
+    public StageManager(Context context, String stageName, ViewGroup container, Timer timer) {
+        this.context = context;
+        this.timer = timer;
         AssetManager assetManager = context.getAssets();
         StringBuilder pieceInfo = new StringBuilder();
 
@@ -136,6 +152,11 @@ public class StageManager {
         catch (IOException | JSONException e) {
             throw new RuntimeException(e);
         }
+
+        String[] part = stageName.split("-");
+        diff = part[0].trim();
+        stage = part[1].trim();
+        pref = context.getSharedPreferences(diff+"diff", Context.MODE_PRIVATE);
     }
 
     public void addPiece(Context context, ViewGroup container){
@@ -171,11 +192,11 @@ public class StageManager {
 
             float[] xy = p.getXY();
             if(used) {
-                //board.inPiece((int)xy[0], (int)xy[1], p.getOffset());
+                board.inPiece((int)xy[0], (int)xy[1], p.getOffset());
                 xy = board.getPhysicalXY((int) xy[0], (int) xy[1]);
             }
             else
-                setTouchListener(imageView,p);
+                setTouchListener(imageView,p,context,container);
 
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(305,305);
             float[] w = p.getCenter();
@@ -188,12 +209,15 @@ public class StageManager {
             container.addView(imageView);
         }
 
+        board.copyBoard();
     }
 
-    public void setTouchListener(View imageView, Piece p) {
+    private void setTouchListener(View imageView, Piece p, Context context, ViewGroup container) {
+        controlPiece = new ControlPiece(context,container);
             imageView.setOnTouchListener(new View.OnTouchListener() {
                 float dX, dY;
                 float[] w = p.getCenter();
+
 
                 @Override
                 public boolean onTouch(View view, MotionEvent event) {
@@ -202,23 +226,44 @@ public class StageManager {
                             dX = view.getX() - event.getRawX();
                             dY = view.getY() - event.getRawY();
 
+                            int[] outLogical = board.getLogicalXY(view.getX()+2*w[0], view.getY()+2*w[1]);
+                            int outX = outLogical[0];
+                            int outY = outLogical[1];
+
+                            if(board.isIn(outX,outY,p.getOffset())) {
+                                board.outPiece(outX,outY,p.getOffset());
+                                Log.e("puzzle",board.printBoard());
+                            }
+
                             view.bringToFront();
                             view.invalidate();
+
+                            controlPiece.hideControlPiece();
 
                             break;
 
                         case MotionEvent.ACTION_MOVE:
-                            float newX = event.getRawX() + dX;
-                            float newY = event.getRawY() + dY;
+                            float rawX = event.getRawX();
+                            float rawY = event.getRawY();
+                            float newX = rawX + dX;
+                            float newY = rawY + dY;
+
+                            int viewWidth = view.getWidth();
+                            int viewHeight = view.getHeight();
+                            int maxX = container.getWidth() - viewWidth;
+                            int maxY = container.getHeight() - viewHeight;
+
+                            float limitedX = Math.max(0, Math.min(newX, maxX));
+                            float limitedY = Math.max(0, Math.min(newY, maxY));
 
                             view.animate()
-                                    .x(event.getRawX() + dX)
-                                    .y(event.getRawY() + dY)
+                                    .x(limitedX)
+                                    .y(limitedY)
                                     .setDuration(0)
                                     .start();
 
                             // 새로운 좌표 저장
-                            p.setXY(newX+2*w[0], newY+2*w[1]);
+                            p.setXY(limitedX+2*w[0], limitedY+2*w[1]);
 
                             break;
 
@@ -240,12 +285,21 @@ public class StageManager {
                                             .start();
 
                                     board.inPiece(x,y,p.getOffset());
+                                    Log.e("puzzle",board.printBoard());
+
+                                    if(isClear()) {
+                                        puzzleComplete();
+                                    }
 
                                     p.setXY(xy[0]-2*w[0], xy[1]-2*w[1]);
                                     break;
                                 }
+                                else {
+                                    p.setXY(viewX, viewY);
+                                    controlPiece.getFocus(p,imageView);
+                                    controlPiece.showControlPiece(viewX,viewY-2*67);
+                                }
 
-                                p.setXY(viewX, viewY);
                                 break;
 
                     }
@@ -254,16 +308,69 @@ public class StageManager {
             });
     }
 
-    public void setTimer() {
-
+    private boolean isClear() {
+        clear = board.isClear();
+        return clear;
     }
 
-    public void setStar() {
+    private void puzzleComplete() {
+        timer.pause();  // 시간 멈춤
 
+        long elapsedTime = timer.getElapsedMillis(); // 밀리초
+        int stars = setStar(elapsedTime); // 시간에 따른 별 갯수 계산
+
+        showClearDialog(stars);  // 클리어 창 띄움
     }
 
+    private int setStar(long elapsedMillis) {
+        if (elapsedMillis < 120000) return 3;
+        else if (elapsedMillis < 240000) return 2;
+        else return 1;
+    }
 
+    private void showClearDialog(int stars) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        View view = inflater.inflate(R.layout.clear, null);
+        builder.setView(view);
+        builder.setCancelable(false);
 
+        AlertDialog dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        dialog.show();
 
+        // 별 갯수 표시
+        ImageView[] starViews = {
+                view.findViewById(R.id.clear_star1),
+                view.findViewById(R.id.claer_star2),
+                view.findViewById(R.id.clear_star3)
+        };
 
+        for (int i = 0; i < 3; i++) {
+            if (i < stars) {
+                starViews[i].setImageResource(R.drawable.cleared_star);  // 획득한 별
+            }
+            else {
+                starViews[i].setImageResource(R.drawable.star); // 획득 못한 별
+            }
+        }
+
+        int originStar = pref.getInt(stage+"star",0);
+        pref.edit().putInt(stage+"star",Math.max(originStar,stars)).apply();
+
+        TextView textView = view.findViewById(R.id.clearTimer);
+        String time = "걸린 시간 : " + timer.getElapsedMillis()/1000 + "초";
+        textView.setText(time);
+
+        view.findViewById(R.id.clearLevelSelect).setOnClickListener(v -> {
+            dialog.dismiss();
+            ((Activity)context).finish(); // 레벨 선택 화면
+        });
+
+        view.findViewById(R.id.clearRetry).setOnClickListener(v -> {
+            Intent intent = ((Activity)context).getIntent();
+            ((Activity)context).finish();
+            (context).startActivity(intent);
+        });
+    }
 }

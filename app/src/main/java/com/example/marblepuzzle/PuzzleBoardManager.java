@@ -5,14 +5,40 @@ import android.widget.ImageView;
 
 public class PuzzleBoardManager {
     private boolean[][] board = new boolean[10][];
+    private boolean[][] fixed = new boolean[10][];
     private ImageView imageView;
 
     public PuzzleBoardManager(View container) {
         for(int i=0; i<10; i++) {
             board[i] = new boolean[10-i];
+            fixed[i] = new boolean[10-i];
         }
 
         imageView = container.findViewById(R.id.board);
+    }
+
+    public void copyBoard() {
+        for(int i=0; i<10; i++) {
+            for(int j=0; j<10-i; j++) {
+                fixed[i][j] = board[i][j];
+            }
+        }
+    }
+
+    public String printBoard() {
+        String s = "";
+        for(int i=0; i<10; i++) {
+            String l = "";
+            for(int j=0; j<board[i].length; j++) {
+                if(board[i][j])
+                    l += 1;
+                else
+                    l += 0;
+            }
+            s += l+"\n";
+        }
+
+        return s;
     }
 
     // 논리 좌표를 실제 좌표로 변환
@@ -20,7 +46,7 @@ public class PuzzleBoardManager {
         float[] xy = new float[2];
         int w = imageView.getWidth();
         int h = imageView.getHeight();
-        float r = h/15.3f;
+        float r = h/15.2f;
         xy[0] = (imageView.getX()+w/2f)-(r*x)+(r*y);
         xy[1] = (imageView.getY()+h/11f)+(r*x)+(r*y);
 
@@ -58,8 +84,8 @@ public class PuzzleBoardManager {
             return false;
 
         for(int i=0; i<offset.length; i++) {
-            int offsetX = x+offset[i][0];
-            int offsetY = y+offset[i][1];
+            int offsetX = x-offset[i][1];
+            int offsetY = y+offset[i][0];
             if (offsetY < 0 || offsetY >= 10) {
                 return false;
             }
@@ -74,12 +100,40 @@ public class PuzzleBoardManager {
         return true;
     }
 
+    public boolean isIn(int x, int y, int[][] offset) {
+        if (y < 0 || y >= 10) {
+            return false;
+        }
+        if (x < 0 || x >= 10 - y) {
+            return false;
+        }
+        if(fixed[x][y]) {
+            return false;
+        }
+
+        for(int i=0; i<offset.length; i++) {
+            int offsetX = x - offset[i][1];
+            int offsetY = y + offset[i][0];
+            if (offsetY < 0 || offsetY >= 10) {
+                return false;
+            }
+            if (offsetX < 0 || offsetX >= 10 - offsetY) {
+                return false;
+            }
+            if(fixed[offsetX][offsetY]) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public void inPiece(int x, int y, int[][] offset) {
         board[x][y] = true;
 
         for(int i=0; i<offset.length; i++) {
-            int offsetX = x+offset[i][0];
-            int offsetY = y+offset[i][1];
+            int offsetX = x-offset[i][1];
+            int offsetY = y+offset[i][0];
             board[offsetX][offsetY] = true;
         }
     }
@@ -88,13 +142,20 @@ public class PuzzleBoardManager {
         board[x][y] = false;
 
         for(int i=0; i<offset.length; i++) {
-            int offsetX = x+offset[i][0];
-            int offsetY = y+offset[i][1];
+            int offsetX = x-offset[i][1];
+            int offsetY = y+offset[i][0];
             board[offsetX][offsetY] = false;
         }
     }
 
     public boolean isClear() {
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                if (!board[i][j]) {
+                    return false;
+                }
+            }
+        }
         return true;
     }
 
