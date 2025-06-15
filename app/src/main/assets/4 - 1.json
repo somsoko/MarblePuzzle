@@ -1,0 +1,7 @@
+{
+  "used": ["sv","l","o","m"],
+  "originPlace": [[0,0],[5,0],[2,0],[8,1]],
+  "originRotate": [0,90,0,0],
+  "originMirrorVer": [false,false,false,false],
+  "originMirrorHor": [false,false,false,false]
+}

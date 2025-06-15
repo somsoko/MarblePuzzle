@@ -173,19 +173,31 @@ public class StageManager {
             imageView.setRotation(p.getRotate());
             if(p.isMirrorVer()) {
                 p.mirrorVer();
-                imageView.setScaleY(-1f);
-                imageView.setRotation(90);
+                if(imageView.getRotation()%180 == 90) {
+                    imageView.setScaleX(imageView.getScaleX() * -1f);
+                    imageView.setRotation(imageView.getRotation() + 90);
+                }
+                else {
+                    imageView.setRotation(imageView.getRotation() + 90);
+                    imageView.setScaleY(imageView.getScaleY() * -1f);
+                }
             }
             if(p.isMirrorHor()) {
                 p.mirrorHor();
-                imageView.setScaleX(-1f);
-                imageView.setRotation(90);
+                if(imageView.getRotation()%180 != 90) {
+                    imageView.setScaleX(imageView.getScaleX() * -1f);
+                    imageView.setRotation(imageView.getRotation() + 90);
+                }
+                else {
+                    imageView.setRotation(imageView.getRotation() + 90);
+                    imageView.setScaleY(imageView.getScaleY() * -1f);
+                }
             }
 
             boolean used = false;
             for(int i=0; i<usedPiece.length; i++) {
                 if(name.equals(usedPiece[i])) {
-                    imageView.setAlpha(0.3F);
+                    imageView.setAlpha(0.4F);
                     used = true;
                 }
             }
@@ -214,8 +226,12 @@ public class StageManager {
 
     private void setTouchListener(View imageView, Piece p, Context context, ViewGroup container) {
         controlPiece = new ControlPiece(context,container);
+
+            container.setOnClickListener(v -> controlPiece.hideControlPiece());
+
             imageView.setOnTouchListener(new View.OnTouchListener() {
                 float dX, dY;
+                float startX, startY;
                 float[] w = p.getCenter();
 
 
@@ -223,6 +239,8 @@ public class StageManager {
                 public boolean onTouch(View view, MotionEvent event) {
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_DOWN:
+                            startX = view.getX();
+                            startY = view.getY();
                             dX = view.getX() - event.getRawX();
                             dY = view.getY() - event.getRawY();
 
@@ -232,7 +250,6 @@ public class StageManager {
 
                             if(board.isIn(outX,outY,p.getOffset())) {
                                 board.outPiece(outX,outY,p.getOffset());
-                                Log.e("puzzle",board.printBoard());
                             }
 
                             view.bringToFront();
@@ -285,7 +302,6 @@ public class StageManager {
                                             .start();
 
                                     board.inPiece(x,y,p.getOffset());
-                                    Log.e("puzzle",board.printBoard());
 
                                     if(isClear()) {
                                         puzzleComplete();
@@ -295,9 +311,25 @@ public class StageManager {
                                     break;
                                 }
                                 else {
-                                    p.setXY(viewX, viewY);
-                                    controlPiece.getFocus(p,imageView);
-                                    controlPiece.showControlPiece(viewX,viewY-2*67);
+                                    if(board.isIn(x,y,p.getOffset())) {
+                                        view.animate()
+                                                .x(startX)
+                                                .y(startY)
+                                                .setDuration(100)
+                                                .start();
+
+                                        logical = board.getLogicalXY(startX+2*w[0],startY+2*w[1]);
+                                        if(board.isValid(logical[0],logical[1], p.getOffset())) {
+                                            board.inPiece(logical[0],logical[1],p.getOffset());
+                                        }
+
+                                        p.setXY(startX, startY);
+                                    }
+                                    else {
+                                        controlPiece.getFocus(p,imageView);
+                                        controlPiece.showControlPiece(viewX,viewY-2*67);
+                                        p.setXY(viewX, viewY);
+                                    }
                                 }
 
                                 break;
@@ -357,6 +389,10 @@ public class StageManager {
 
         int originStar = pref.getInt(stage+"star",0);
         pref.edit().putInt(stage+"star",Math.max(originStar,stars)).apply();
+
+        TextView text = view.findViewById(R.id.clearLevel);
+        String stageName = diff+" - "+stage;
+        text.setText(stageName);
 
         TextView textView = view.findViewById(R.id.clearTimer);
         String time = "걸린 시간 : " + timer.getElapsedMillis()/1000 + "초";

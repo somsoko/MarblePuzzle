@@ -8,15 +8,11 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
 public class ControlPiece {
-    private Context context;
-    private ViewGroup container;
     private View controlPiece;
     private  Piece p;
     private View imageView;
 
     public ControlPiece(Context context, ViewGroup container) {
-        this.context = context;
-        this.container = container;
 
         LayoutInflater inflater = LayoutInflater.from(context);
         controlPiece = inflater.inflate(R.layout.control_piece, container, false);

@@ -52,10 +52,6 @@ public class Piece {
         XY[1] = y;
     }
 
-    public void setOffset(int[][] offset) {
-        this.offset = offset;
-    }
-
     public void setRotate(int rotate) {
         this.rotate = rotate;
     }

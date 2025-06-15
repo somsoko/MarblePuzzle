@@ -16,7 +16,6 @@ import androidx.fragment.app.FragmentActivity;
         private StageManager stageManager;
         private Timer timer = new Timer();
         private String stage;
-        private boolean isPauseDialogVisible = false;
         private AlertDialog pauseDialog;
         private SharedPreferences pref;
         private String diff;
@@ -38,17 +37,17 @@ import androidx.fragment.app.FragmentActivity;
                 showPauseOverlay();
             });
 
-            stage = getIntent().getStringExtra("stageName");
+            String stageName = getIntent().getStringExtra("stageName");
             FrameLayout container = findViewById(R.id.stageWindow);
 
             container.post(()->{
-            stageManager = new StageManager(this,stage,container,timer);
+            stageManager = new StageManager(this,stageName,container,timer);
                 stageManager.addPiece(this,container);
             });
 
-            String[] part = stage.split("-");
+            String[] part = stageName.split("-");
             diff = part[0].trim();
-            String stageName = part[1].trim();
+            stage = part[1].trim();
             pref = getSharedPreferences(diff+"diff", Context.MODE_PRIVATE);
         }
 
@@ -62,10 +61,11 @@ import androidx.fragment.app.FragmentActivity;
             pauseDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             pauseDialog.show();
 
+
             TextView tvLevel = view.findViewById(R.id.tvLevel);
             tvLevel.setText(stage);
 
-            int star = pref.getInt(diff+"star",0);
+            int star = pref.getInt(stage+"star",0);
             if(star >= 1) {
                 ((ImageView)view.findViewById(R.id.star1)).setImageResource(R.drawable.cleared_star);
             }
@@ -78,7 +78,7 @@ import androidx.fragment.app.FragmentActivity;
 
             view.findViewById(R.id.btnResume).setOnClickListener(v -> {
                 pauseDialog.dismiss();
-                timer.resume(); // 스톱워치 재개 등
+                timer.resume(); // 스톱워치 재개
             });
 
             view.findViewById(R.id.btnLevelSelect).setOnClickListener(v -> {
@@ -91,6 +91,14 @@ import androidx.fragment.app.FragmentActivity;
                 finish();
                 startActivity(intent);
             });
+        }
+
+        @Override
+        protected void onDestroy() {
+            if (pauseDialog != null && pauseDialog.isShowing()) {
+                pauseDialog.dismiss();
+            }
+            super.onDestroy();
         }
     }
 

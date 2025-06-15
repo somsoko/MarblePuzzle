@@ -16,10 +16,11 @@
 
 
     <ScrollView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:fillViewport="true"
-            android:scrollbars="none">
+            android:scrollbars="none"
+            android:layout_gravity="center_horizontal">
 
         <GridLayout
                 android:id="@+id/stageGrid"
@@ -27,7 +28,6 @@
                 android:layout_height="wrap_content"
                 android:alignmentMode="alignMargins"
                 android:layout_gravity="center_horizontal"
-                android:columnCount="7"
                 android:padding="10dp">
         </GridLayout>
 

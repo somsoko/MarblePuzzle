@@ -17,28 +17,28 @@ public class PuzzleBoardManager {
         imageView = container.findViewById(R.id.board);
     }
 
+
+    // debug용 함수
+    public String printBoard() {
+        String s ="";
+        for(int i=0; i<10; i++) {
+            for(int j=0; j<10-i; j++) {
+                if(board[i][j])
+                    s += 1;
+                else
+                    s += 0;
+            }
+            s += "\n";
+        }
+        return s;
+    }
+
     public void copyBoard() {
         for(int i=0; i<10; i++) {
             for(int j=0; j<10-i; j++) {
                 fixed[i][j] = board[i][j];
             }
         }
-    }
-
-    public String printBoard() {
-        String s = "";
-        for(int i=0; i<10; i++) {
-            String l = "";
-            for(int j=0; j<board[i].length; j++) {
-                if(board[i][j])
-                    l += 1;
-                else
-                    l += 0;
-            }
-            s += l+"\n";
-        }
-
-        return s;
     }
 
     // 논리 좌표를 실제 좌표로 변환
@@ -80,8 +80,9 @@ public class PuzzleBoardManager {
         if (x < 0 || x >= 10 - y) {
             return false;
         }
-        if(board[x][y])
+        if(board[x][y]){
             return false;
+        }
 
         for(int i=0; i<offset.length; i++) {
             int offsetX = x-offset[i][1];
@@ -93,8 +94,9 @@ public class PuzzleBoardManager {
                 return false;
             }
 
-            if(board[offsetX][offsetY])
+            if(board[offsetX][offsetY]) {
                 return false;
+            }
         }
 
         return true;

@@ -1,0 +1,7 @@
+{
+  "used": ["c","x","sl","lv","ll","z","m","l"],
+  "originPlace": [[3,4],[3,2],[1,1],[5,0],[4,0],[6,3],[8,1],[0,1]],
+  "originRotate": [0,0,0,0,90,0,0,0],
+  "originMirrorVer": [false,false,true,false,true,false,false,false],
+  "originMirrorHor": [true,false,false,false,false,false,false,false]
+}
